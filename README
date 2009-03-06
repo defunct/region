@@ -1,0 +1,18 @@
+REGION
+
+A model for a lockable and dirtyable region of a file channel.
+
+    Issues and Tasks: http://blogometer.com/trac/incubator
+    Source: http://github.com/bigeasy/region/tree/master
+    Contact: alan@blogometer.com
+
+PURPOSE
+
+Region associates a file position and a lock to a byte buffer. A region will
+also track which bytes in the byte buffer are dirty and need to be written to
+disk.
+
+MOTIVATION
+
+This came about when wanting a create a generic file header, so I wouldn't have
+to sum field offsets.
