@@ -16,7 +16,17 @@ public class SubCleanable implements Cleanable
     /** The parent. */
     private final Cleanable cleanable;
 
-    // TODO Document.
+    /**
+     * Create a cleanable that reports on a slice of the given cleanable defined
+     * by the given offset and the given length.
+     * 
+     * @param dirtyable
+     *            The parent cleanable.
+     * @param offset
+     *            The offset into the parent cleanable.
+     * @param length
+     *            The length of the the buffer slice.
+     */
     public SubCleanable(Cleanable dirtyable, int offset, int length)
     {
         this.offset = offset;
@@ -24,19 +34,33 @@ public class SubCleanable implements Cleanable
         this.cleanable = dirtyable;
     }
     
-    // TODO Document.
+    /**
+     * Get the length of the buffer slice.
+     * 
+     * @return The length of the buffer slice.
+     */
     public int getLength()
     {
         return length;
     }
 
-    // TODO Document.
+    /**
+     * Mark the entire buffer slice as dirty.
+     */
     public void dirty()
     {
         dirty(0, length);
     }
 
-    // TODO Document.
+    /**
+     * Mark as dirty the bytes in the byte buffer slice starting at the given
+     * offset and extending for the given length.
+     * 
+     * @param offset
+     *            The offset of the dirty region.
+     * @param length
+     *            The length of the dirty region.
+     */
     public void dirty(int offset, int length)
     {
         if (length > getLength())
@@ -45,8 +69,16 @@ public class SubCleanable implements Cleanable
         }
         cleanable.dirty(this.offset + offset, length);
     }
-    
-    // TODO Document.
+
+    /**
+     * Mark as dirty the bytes in the byte buffer slice starting at the given
+     * offset and extending for the given length.
+     * 
+     * @param offset
+     *            The offset of the dirty region.
+     * @param length
+     *            The length of the dirty region.
+     */
     public void clean(int offset, int length)
     {
         if (length > getLength())
@@ -56,7 +88,9 @@ public class SubCleanable implements Cleanable
         cleanable.clean(this.offset + offset, length);
     }
     
-    // TODO Document.
+    /**
+     * Mark the entire byte buffer slice as clean.
+     */
     public void clean()
     {
         clean(0, length);

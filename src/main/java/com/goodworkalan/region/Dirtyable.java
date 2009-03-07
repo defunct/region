@@ -2,6 +2,7 @@ package com.goodworkalan.region;
 
 /**
  * Used to mark regions of a buffer as dirty and in need of writing to disk.
+ * The dirtyable interface parallels a byte buffer.
  *  
  * @author Alan Gutierrez
  */
@@ -15,8 +16,8 @@ public interface Dirtyable
     public int getLength();
 
     /**
-     * Mark the region starting at the given offset and extending for the given
-     * length as dirty.
+     * Mark as dirty the bytes in the byte buffer starting at the given offset
+     * and extending for the given length.
      * 
      * @param offset
      *            The offset of the dirty region.

@@ -17,7 +17,7 @@ public interface Writable extends Region
 {
     /**
      * Write the dirty regions to the given file channel using the given disk at
-     * the position of this dirty region map offset by the given offset.
+     * the position of this region offset by the given offset.
      * 
      * @param fileChannel
      *            The file channel to write to.

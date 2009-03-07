@@ -3,7 +3,6 @@ package com.goodworkalan.region;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
@@ -21,7 +20,7 @@ public class DirtyByteMap implements Cleanable
     /** The map of dirty regions offsets to count of dirty bytes. */
     final SortedMap<Integer, Integer> dirtied;
     
-    // TODO Document.
+    /** The length of the buffer. */
     private final int length;
 
     /**
@@ -37,19 +36,19 @@ public class DirtyByteMap implements Cleanable
         this.dirtied = new TreeMap<Integer, Integer>();
     }
     
-    // TODO Document.
-    public Map<Integer, Integer> toMap()
-    {
-        return Collections.unmodifiableMap(dirtied);
-    }
-    
-    // TODO Document.
+    /**
+     * Get the length of the buffer.
+     * 
+     * @return The length of the buffer.
+     */
     public int getLength()
     {
         return length;
     }
 
-    // TODO Document.
+    /**
+     * Mark the entire buffer as dirty.
+     */
     public void dirty()
     {
         dirty(0, getLength());
@@ -109,7 +108,15 @@ public class DirtyByteMap implements Cleanable
         dirtied.put(start, end);
     }
     
-    // TODO Document.
+    /**
+     * Mark as dirty the bytes in the byte buffer starting at the given offset
+     * and extending for the given length.
+     * 
+     * @param offset
+     *            The offset of the dirty region.
+     * @param length
+     *            The length of the dirty region.
+     */
     public void clean(int offset, int length)
     {
         int start = offset;
@@ -157,24 +164,38 @@ public class DirtyByteMap implements Cleanable
         }
     }
     
-    // TODO Document.
+    /**
+     * Mark the entire buffer as clean.
+     */
     public void clean()
     {
         dirtied.clear();
     }
 
-    // TODO Document.
-    public void write(ByteBuffer bytes, FileChannel fileChannel, long position) throws IOException
+    /**
+     * Write the bytes marked as dirty in this dirty byte map to the given byte
+     * buffer to the given file channel at the given file position.
+     * 
+     * @param byteBuffer
+     *            The byte buffer.
+     * @param fileChannel
+     *            The file channel.
+     * @param position
+     *            The file position.
+     * @throws IOException
+     *             If an I/O error occurs while writing the byte buffer.
+     */
+    public void write(ByteBuffer byteBuffer, FileChannel fileChannel, long position) throws IOException
     {
-        for(Map.Entry<Integer, Integer> entry: toMap().entrySet())
+        for(Map.Entry<Integer, Integer> entry: dirtied.entrySet())
         {
-            bytes.limit(entry.getValue());
-            bytes.position(entry.getKey());
+            byteBuffer.limit(entry.getValue());
+            byteBuffer.position(entry.getKey());
             
-            fileChannel.write(bytes, position + entry.getKey());
+            fileChannel.write(byteBuffer, position + entry.getKey());
         }
 
-        bytes.limit(bytes.capacity());
+        byteBuffer.limit(byteBuffer.capacity());
         
         clean();
     }
