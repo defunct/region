@@ -6,7 +6,7 @@
     <groupId>com.goodworkalan</groupId>
     <artifactId>region</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.X</version>
+    <version>0.1${version.suffix}</version>
 
     <name>region</name>
     <description>A model for a lockable and dirtyable region of a file channel.</description>
@@ -56,8 +56,18 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+      <repository>
+        <id>goodworkalan-repository</id>
+        <url>scpexe://ljubljana.blogometer.com${distribution.repository.path}</url>
+      </repository>
+    </distributionManagement>
+
     <properties>
         <site.javadoc.show>protected</site.javadoc.show>
+        <site.javadoc.visiblity>public</site.javadoc.visiblity>
+        <version.suffix>-SNAPSHOT</version.suffix>
+        <distribution.repository.path>/opt/var/www/static/goodworkalan/m2/snapshots</distribution.repository.path>
     </properties>
 
     <build>
