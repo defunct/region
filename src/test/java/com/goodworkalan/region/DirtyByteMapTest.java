@@ -27,6 +27,8 @@ public class DirtyByteMapTest
         dirtyByteMap.dirty(6, 4);
         dirtyByteMap.dirty(3, 3);
         assertEquals(1, dirtyByteMap.dirtied.size());
+        
+        dirtyByteMap.clean();
 
         // Two invalid regions.
         dirtyByteMap.dirty(3, 3);
@@ -48,6 +50,8 @@ public class DirtyByteMapTest
         // Extending a region.
         dirtyByteMap.dirty(8, 3);
         assertEquals(1, dirtyByteMap.dirtied.size());
+        
+        dirtyByteMap.clean();
         
         // Swallowing entire regions.
         dirtyByteMap.dirty(3, 3);
