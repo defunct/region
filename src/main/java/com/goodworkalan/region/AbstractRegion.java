@@ -9,14 +9,13 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Alan Gutierrez
  */
-public abstract class AbstractRegion implements Region
-{
+public abstract class AbstractRegion implements Region {
     /** The position of the region on disk. */
     private final long position;
-    
+
     /** The byte buffer of region content. */
     private final ByteBuffer byteBuffer;
-    
+
     /** A lock used to lock the region for reading and writing. */
     private final Lock lock;
 
@@ -31,8 +30,7 @@ public abstract class AbstractRegion implements Region
      * @param lock
      *            A lock used to lock the region for reading and writing.
      */
-    public AbstractRegion(long position, ByteBuffer byteBuffer, Lock lock)
-    {
+    public AbstractRegion(long position, ByteBuffer byteBuffer, Lock lock) {
         this.position = position;
         this.byteBuffer = byteBuffer;
         this.lock = lock;
@@ -51,8 +49,7 @@ public abstract class AbstractRegion implements Region
      * 
      * @return The lock used to guard the region.
      */
-    public Lock getLock()
-    {
+    public Lock getLock() {
         return lock;
     }
 
@@ -61,8 +58,7 @@ public abstract class AbstractRegion implements Region
      * 
      * @return The file position of the region on disk.
      */
-    public long getPosition()
-    {
+    public long getPosition() {
         return position;
     }
 
@@ -71,8 +67,7 @@ public abstract class AbstractRegion implements Region
      * 
      * @return The byte content of the region.
      */
-    public ByteBuffer getByteBuffer()
-    {
+    public ByteBuffer getByteBuffer() {
         return byteBuffer;
     }
 
@@ -81,11 +76,10 @@ public abstract class AbstractRegion implements Region
      * 
      * @return The length of the buffer.
      */
-    public int getLength()
-    {
+    public int getLength() {
         return getDirtyable().getLength();
     }
-    
+
     /**
      * Mark as dirty the bytes in the byte buffer starting at the given offset
      * and extending for the given length.
@@ -95,16 +89,14 @@ public abstract class AbstractRegion implements Region
      * @param length
      *            The length of the dirty region.
      */
-    public void dirty(int offset, int length)
-    {
+    public void dirty(int offset, int length) {
         getDirtyable().dirty(offset, length);
     }
-    
+
     /**
      * Mark the entire buffer as dirty.
      */
-    public void dirty()
-    {
+    public void dirty() {
         getDirtyable().dirty();
     }
 }
