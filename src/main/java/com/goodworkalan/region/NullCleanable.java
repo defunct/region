@@ -1,14 +1,12 @@
 package com.goodworkalan.region;
 
-
 /**
  * A null implementation of {@link Cleanable} that does not bother to record
  * which bytes are clean or dirty.
- *  
+ * 
  * @author Alan Gutierrez
  */
-public class NullCleanable implements Cleanable
-{
+public class NullCleanable implements Cleanable {
     /** The length of the buffer. */
     private final int length;
 
@@ -19,8 +17,7 @@ public class NullCleanable implements Cleanable
      * @param length
      *            The length of the buffer.
      */
-    public NullCleanable(int length)
-    {
+    public NullCleanable(int length) {
         this.length = length;
     }
 
@@ -29,8 +26,7 @@ public class NullCleanable implements Cleanable
      * 
      * @return The length of the buffer.
      */
-     public int getLength()
-    {
+    public int getLength() {
         return length;
     }
 
@@ -41,14 +37,12 @@ public class NullCleanable implements Cleanable
      *            The offset of the dirty region.
      * @param length
      *            The length of the dirty region.
-     */   
-    public void dirty(int offset, int length)
-    {
+     */
+    public void dirty(int offset, int length) {
     }
-    
+
     /** Does nothing. */
-    public void dirty()
-    {
+    public void dirty() {
     }
 
     /**
@@ -58,13 +52,11 @@ public class NullCleanable implements Cleanable
      *            The offset of the dirty region.
      * @param length
      *            The length of the dirty region.
-     */  
-    public void clean(int offset, int length)
-    {
+     */
+    public void clean(int offset, int length) {
     }
 
     /** Does nothing. */
-    public void clean()
-    {
+    public void clean() {
     }
 }
