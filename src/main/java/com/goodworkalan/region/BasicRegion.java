@@ -16,8 +16,7 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Alan Gutierrez
  */
-public class BasicRegion extends AbstractRegion
-{
+public class BasicRegion extends AbstractRegion {
     /** Used to track which bytes in the byte buffer are dirty. */
     public Dirtyable dirtyable;
 
@@ -35,12 +34,11 @@ public class BasicRegion extends AbstractRegion
      *            The drityable interface used to record dirtyed bytes in the
      *            byte buffer.
      */
-    public BasicRegion(long position, ByteBuffer byteBuffer, Lock lock, Dirtyable dirtyable)
-    {
+    public BasicRegion(long position, ByteBuffer byteBuffer, Lock lock, Dirtyable dirtyable) {
         super(position, byteBuffer, lock);
         this.dirtyable = dirtyable;
     }
-    
+
     /**
      * Return the drityable interface used to record dirtyed bytes in the byte
      * buffer.
@@ -48,8 +46,7 @@ public class BasicRegion extends AbstractRegion
      * @return The dirtyable recorder for the byte buffer.
      */
     @Override
-    protected Dirtyable getDirtyable()
-    {
+    protected Dirtyable getDirtyable() {
         return dirtyable;
     }
 }
