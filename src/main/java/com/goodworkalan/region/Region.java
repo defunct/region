@@ -13,8 +13,7 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Alan Gutierrez
  */
-public interface Region extends Dirtyable
-{
+public interface Region extends Dirtyable {
     /**
      * Get the lock used to guard the underlying byte buffer.
      * 
@@ -28,11 +27,11 @@ public interface Region extends Dirtyable
      * @return The file position of the region on disk.
      */
     public long getPosition();
-    
+
     /**
-     * Get the byte content of the region. Subclasses
-     * will define this method to return a byte buffer that corresponds to the
-     * given file position, accounting for any offsets.
+     * Get the byte content of the region. Subclasses will define this method to
+     * return a byte buffer that corresponds to the given file position,
+     * accounting for any offsets.
      * 
      * @return The the byte content of the region.
      */
