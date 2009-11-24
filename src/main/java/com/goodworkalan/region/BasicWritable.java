@@ -11,11 +11,10 @@ import java.util.concurrent.locks.Lock;
  * 
  * @author Alan Gutierrez
  */
-public class BasicWritable extends AbstractRegion implements Writable
-{
+public class BasicWritable extends AbstractRegion implements Writable {
     /** The cleanable interface used to track which bytes are dirty. */
     protected final Cleanable cleanable;
-    
+
     /**
      * Create a region at the given file position, with the given byte buffer of
      * region content, guarded by the given lock.
@@ -30,8 +29,7 @@ public class BasicWritable extends AbstractRegion implements Writable
      *            The cleanable interface used to record dirtyed bytes in the
      *            byte buffer.
      */
-    public BasicWritable(long position, ByteBuffer byteBuffer, Lock lock, Cleanable cleanable)
-    {
+    public BasicWritable(long position, ByteBuffer byteBuffer, Lock lock, Cleanable cleanable) {
         super(position, byteBuffer, lock);
         this.cleanable = cleanable;
     }
@@ -43,8 +41,7 @@ public class BasicWritable extends AbstractRegion implements Writable
      * @return The dirtyable recorder for the byte buffer.
      */
     @Override
-    protected Dirtyable getDirtyable()
-    {
+    protected Dirtyable getDirtyable() {
         return cleanable;
     }
 
@@ -60,8 +57,7 @@ public class BasicWritable extends AbstractRegion implements Writable
      * @throws IOException
      *             If an I/O error occurs.
      */
-    public void write(FileChannel fileChannel, int offset) throws IOException
-    {
+    public void write(FileChannel fileChannel, int offset) throws IOException {
         ByteBuffer bytes = getByteBuffer();
         bytes.clear();
         fileChannel.write(bytes, offset + getPosition());
