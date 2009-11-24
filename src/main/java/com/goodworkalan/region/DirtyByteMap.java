@@ -9,17 +9,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Dirty regions of a page as map of offsets to counts of dirty bytes. This
- * is a base class for raw pages and headers that want to write only the
- * regions of a page that have changed.
+ * Dirty regions of a page as map of offsets to counts of dirty bytes. This is a
+ * base class for raw pages and headers that want to write only the regions of a
+ * page that have changed.
  * 
  * @author Alan Gutierrez
  */
-public class DirtyByteMap implements Cleanable
-{
+public class DirtyByteMap implements Cleanable {
     /** The map of dirty regions offsets to count of dirty bytes. */
     final SortedMap<Integer, Integer> dirtied;
-    
+
     /** The length of the buffer. */
     private final int length;
 
@@ -30,27 +29,24 @@ public class DirtyByteMap implements Cleanable
      * @param length
      *            The length of the region to track.
      */
-    public DirtyByteMap(int length)
-    {
+    public DirtyByteMap(int length) {
         this.length = length;
         this.dirtied = new TreeMap<Integer, Integer>();
     }
-    
+
     /**
      * Get the length of the buffer.
      * 
      * @return The length of the buffer.
      */
-    public int getLength()
-    {
+    public int getLength() {
         return length;
     }
 
     /**
      * Mark the entire buffer as dirty.
      */
-    public void dirty()
-    {
+    public void dirty() {
         dirty(0, getLength());
     }
 
@@ -65,41 +61,31 @@ public class DirtyByteMap implements Cleanable
      * @param length
      *            The length of the dirty region.
      */
-    public void dirty(int offset, int length)
-    {
+    public void dirty(int offset, int length) {
         int start = offset;
         int end = offset + length;
-        if (start < 0)
-        {
+        if (start < 0) {
             throw new IllegalStateException();
         }
-        
-        if (end > getLength())
-        {
+
+        if (end > getLength()) {
             throw new IllegalStateException();
         }
-        
-        INVALIDATE: for(;;)
-        {
+
+        INVALIDATE: for (;;) {
             Iterator<Map.Entry<Integer, Integer>> entries = dirtied.entrySet().iterator();
-            while (entries.hasNext())
-            {
+            while (entries.hasNext()) {
                 Map.Entry<Integer, Integer> entry = entries.next();
-                if (start < entry.getKey() && end >= entry.getKey())
-                {
+                if (start < entry.getKey() && end >= entry.getKey()) {
                     entries.remove();
                     end = end > entry.getValue() ? end : entry.getValue();
                     continue INVALIDATE;
-                }
-                else if (entry.getKey() <= start && start <= entry.getValue())
-                {
+                } else if (entry.getKey() <= start && start <= entry.getValue()) {
                     entries.remove();
                     start = entry.getKey();
                     end = end > entry.getValue() ? end : entry.getValue();
                     continue INVALIDATE;
-                }
-                else if (entry.getValue() < start)
-                {
+                } else if (entry.getValue() < start) {
                     break;
                 }
             }
@@ -107,7 +93,7 @@ public class DirtyByteMap implements Cleanable
         }
         dirtied.put(start, end);
     }
-    
+
     /**
      * Mark as dirty the bytes in the byte buffer starting at the given offset
      * and extending for the given length.
@@ -117,58 +103,46 @@ public class DirtyByteMap implements Cleanable
      * @param length
      *            The length of the dirty region.
      */
-    public void clean(int offset, int length)
-    {
+    public void clean(int offset, int length) {
         int start = offset;
         int end = offset + length;
-        if (start < 0)
-        {
+        if (start < 0) {
             throw new IllegalStateException();
         }
-        
-        if (end > getLength())
-        {
+
+        if (end > getLength()) {
             throw new IllegalStateException();
         }
-        
-        INVALIDATE: for(;;)
-        {
-            Iterator<Map.Entry<Integer, Integer>> entries = dirtied.entrySet().iterator();
-            while (entries.hasNext())
-            {
+
+        INVALIDATE: for (;;) {
+            Iterator<Map.Entry<Integer, Integer>> entries = dirtied.entrySet()
+                    .iterator();
+            while (entries.hasNext()) {
                 Map.Entry<Integer, Integer> entry = entries.next();
-                if (start <= entry.getKey() && end > entry.getKey())
-                {
+                if (start <= entry.getKey() && end > entry.getKey()) {
                     entries.remove();
-                    if (end < entry.getValue())
-                    {
+                    if (end < entry.getValue()) {
                         dirtied.put(end, entry.getValue());
                     }
                     continue INVALIDATE;
-                }
-                else if (entry.getKey() < start && start < entry.getValue())
-                {
+                } else if (entry.getKey() < start && start < entry.getValue()) {
                     entries.remove();
                     dirtied.put(entry.getKey(), start);
-                    if (end < entry.getValue())
-                    {
+                    if (end < entry.getValue()) {
                         dirtied.put(end, entry.getValue());
                     }
                     continue INVALIDATE;
-                }
-                else if (entry.getValue() < start)
-                {
+                } else if (entry.getValue() < start) {
                     break;
                 }
             }
         }
     }
-    
+
     /**
      * Mark the entire buffer as clean.
      */
-    public void clean()
-    {
+    public void clean() {
         dirtied.clear();
     }
 
@@ -185,18 +159,17 @@ public class DirtyByteMap implements Cleanable
      * @throws IOException
      *             If an I/O error occurs while writing the byte buffer.
      */
-    public void write(ByteBuffer byteBuffer, FileChannel fileChannel, long position) throws IOException
-    {
-        for(Map.Entry<Integer, Integer> entry: dirtied.entrySet())
-        {
+    public void write(ByteBuffer byteBuffer, FileChannel fileChannel,
+            long position) throws IOException {
+        for (Map.Entry<Integer, Integer> entry : dirtied.entrySet()) {
             byteBuffer.limit(entry.getValue());
             byteBuffer.position(entry.getKey());
-            
+
             fileChannel.write(byteBuffer, position + entry.getKey());
         }
 
         byteBuffer.limit(byteBuffer.capacity());
-        
+
         clean();
     }
 }
