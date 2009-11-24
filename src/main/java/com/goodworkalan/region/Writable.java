@@ -5,16 +5,15 @@ import java.nio.channels.FileChannel;
 
 /**
  * A region that writes itself to an underlying file channel, possibly taking
- * into consideration which bytes in the byte buffer are dirty and which
- * are clean.
+ * into consideration which bytes in the byte buffer are dirty and which are
+ * clean.
  * <p>
- * This interface is intended for regions that write only the dirty portions
- * of their byte buffer.
+ * This interface is intended for regions that write only the dirty portions of
+ * their byte buffer.
  * 
  * @author Alan Gutierrez
  */
-public interface Writable extends Region
-{
+public interface Writable extends Region {
     /**
      * Write the dirty regions to the given file channel using the given disk at
      * the position of this region offset by the given offset.
