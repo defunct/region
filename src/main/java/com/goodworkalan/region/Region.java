@@ -4,12 +4,10 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.locks.Lock;
 
 /**
- * Tracks a lockable and dirtyable region of a file channel. A region maps a
- * byte buffer to a lock to guard writing to the byte buffer and a position in
- * the file. A region implements the {@link Dirtyable} interface to that it can
+ * A lockable and dirtyable region of a file channel. A region maps a byte
+ * buffer to a lock to guard writing to the byte buffer and a position in the
+ * file. A region implements the {@link Dirtyable} interface to that it can
  * track which bytes in the byte buffer need to be written to disk.
- * <p>
- * A <code>Region</code> does not actually contain a file channel itself.
  * 
  * @author Alan Gutierrez
  */
