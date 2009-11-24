@@ -6,8 +6,7 @@ package com.goodworkalan.region;
  * 
  * @author Alan Gutierrez
  */
-public interface Cleanable extends Dirtyable
-{
+public interface Cleanable extends Dirtyable {
     /**
      * Mark as dirty the bytes in the byte buffer starting at the given offset
      * and extending for the given length.
@@ -18,7 +17,7 @@ public interface Cleanable extends Dirtyable
      *            The length of the dirty region.
      */
     public void clean(int offset, int length);
-    
+
     /**
      * Mark the entire byte buffer as clean.
      */
