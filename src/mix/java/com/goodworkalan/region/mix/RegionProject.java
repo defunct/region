@@ -10,7 +10,7 @@ public class RegionProject extends ProjectModule {
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan", "region", "0.1"))
+                .produces(new Artifact("com.goodworkalan/region/0.1"))
                 .test()
                     .depends()
                         .artifact(new Artifact("org.mockito/mockito-core/1.6"))
